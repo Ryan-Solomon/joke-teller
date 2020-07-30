@@ -1,7 +1,3 @@
-const button = document.getElementById("button");
-const audioElement = document.getElementById("audio");
-
-// VoiceRSS Javascript SDK
 const VoiceRSS = {
   speech: function (e) {
     this._validate(e), this._request(e);
@@ -104,40 +100,3 @@ const VoiceRSS = {
     throw "The browser does not support HTTP request";
   },
 };
-
-function toggleButton() {
-  button.disabled = !button.disabled;
-}
-
-function tellMe(joke) {
-  VoiceRSS.speech({
-    key: "a4544a9e13834d3bb61b96cbe98910ad",
-    src: joke,
-    hl: "en-us",
-    r: 0,
-    c: "mp3",
-    f: "44khz_16bit_stereo",
-    ssml: false,
-  });
-}
-
-let joke = "";
-
-async function getJokes() {
-  try {
-    const resp = await fetch("URL");
-    const data = await resp.json();
-    if (data.setup) {
-      joke = `${data.setup} ... ${data.delivery}`;
-    } else {
-      joke = data.joke;
-    }
-    tellMe(joke);
-    toggleButton();
-  } catch (error) {
-    console.log(error);
-  }
-}
-
-button.addEventListener("click", getJokes);
-audioElement.addEventListener("ended", toggleButton);
